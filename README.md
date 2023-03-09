@@ -76,6 +76,8 @@
 
     cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
     project(solver_app)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/~/formatter_ex_lib formatter_ex_lib_dir)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/~/solver_lib solver_lib_dir)
     add_executable(solver_app ${CMAKE_CURRENT_SOURCE_DIR}/equation.cpp)
 
 
