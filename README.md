@@ -27,7 +27,7 @@
 
 
  #### Задание 2. 
-     mkdir formatter_ex
+     mkdir formatter_ex_lib
      cd formatter_ex
      mkdir src
      mkdir build
@@ -55,7 +55,8 @@
 
     cmake --build .
     
-<img width="1507" alt="Снимок экрана 2023-03-09 в 12 51 03" src="https://user-images.githubusercontent.com/113801739/223985130-f8e167d4-20fc-4968-ba0e-76c152b6398f.png">
+![Снимок экрана 2023-03-21 в 22 37 21](https://user-images.githubusercontent.com/113801739/226722299-0c81dfdf-3c2a-465b-819d-51f66faa66f0.png)
+
 
 #### Задание 3. 
 
@@ -69,16 +70,40 @@
 ##### *hello_world app*
 
     cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
-    project(hello_world_app)
-    add_executable(hello_world ${CMAKE_CURRENT_SOURCE_DIR}/hello_world.cpp)
+    project(hello_world)
+    include_directories("~/formatter_lib/src")
+    include_directories("~/formatter_ex_lib/src")
+    add_library(formatter_lib STATIC "~/formatter_lib/src/formatter.cpp")
+    add_library(formatter_ex_lib STATIC "~/formatter_ex_lib/src/formatter_ex.cpp")
+    add_executable(hello_exec "~/hello_world/src/hello_world.cpp")
+    target_link_libraries(hello_exec formatter_lib formatter_ex_lib)
+   
+
+![hello_world_1](https://user-images.githubusercontent.com/113801739/226726898-25f06ade-674b-457f-a05a-09c51a47a9da.png)
+
+    cd build 
+    ./hello_exec
+    
+![hello_world_2](https://user-images.githubusercontent.com/113801739/226727131-91fdf858-87ea-40e2-9249-b4c4993be9a9.png)
+
+
     
 ##### *solver app*
 
-    cmake_minimum_required(VERSION 3.22.1 FATAL_ERROR)
-    project(solver_app)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/~/formatter_ex_lib formatter_ex_lib_dir)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/~/solver_lib solver_lib_dir)
-    add_executable(solver_app ${CMAKE_CURRENT_SOURCE_DIR}/equation.cpp)
+    cmake_minimum_required(VERSION 3.4)
+    project(solver)
+    set(CMAKE_CXX_STANDARD 11)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../formatter_ex_lib formatter_ex_lib_dir)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../solver_lib solver_lib_dir)
+    add_executable(solver ${CMAKE_CURRENT_SOURCE_DIR}/src/equation.cpp)
+    target_include_directories(formatter_ex_lib PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/../formatter_ex_lib/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../solver_lib/src
+    )
+    target_link_libraries(solver formatter_ex_lib solver_lib)
 
+![Снимок экрана 2023-03-22 в 01 03 39](https://user-images.githubusercontent.com/113801739/226752262-41683fb7-68b6-4264-a483-bcfccdbb18fa.png)
 
+![Снимок экрана 2023-03-22 в 01 03 53](https://user-images.githubusercontent.com/113801739/226752280-f45d7a2c-641a-4259-a9af-8533f1a8acff.png)
 
